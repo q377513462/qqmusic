@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        html{
+            width: 100%;
+            height: 100%;
+        }
+        a{
+            color: #000;
+            text-decoration: none;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        a:link{
+            text-decoration: none;
+        }
+
+        ul{
+            list-style: none;
+        }
+        .sprite{
+            background-image: url("images/icon_sprite.png");
+        }
+        body{
+            width: 100%;
+            min-width: 1100px;
+            height: 100%;
+            background-color: rgb(70, 70, 162);
+        }
+
+        /*QQ音乐图标*/
+        .player_logo{
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            opacity: .3;
+            z-index: 3;     /*层级*/
+        }
+        .userInfo{
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            text-align: center;
+            padding-right: 28px;
+            z-index: 4;     /*层级*/
+        }
+        .userInfo .download{
+            float: left;
+            margin-right: 26px;
+            font-size: 14px;
+            color: #fff;
+            line-height: 30px;
+        }
+        .userInfo .download a{
+            display: inline-block;
+            margin-left: 6px;
+            padding: 0 17px;
+            height: 28px;
+            border-radius: 28px;
+            font-size: 15px;
+            color: #fff;
+            text-align: center;
+            background-color: #31c27c;
+        }
+        .userInfo .download a i{
+            display: inline-block;
+            margin-right: 4px;
+            vertical-align: -2px;
+            width: 13px;
+            height: 14px;
+            background-position: -160px -320px;
+        }
+        .userInfo .login{
+            float: left;
+        }
+        .userInfo .login .photo{
+            position: relative;
+            float: left;
+            margin-right: 15px;
+        }
+        .userInfo .login .photo img:nth-child(1){
+            width: 30px;
+            height: 30px;
+            border-radius: 90px;
+            margin-right: 20px;
+        }
+        .userInfo .login .photo img:nth-child(2){
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            top: 18px;
+            left: 18px;
+        }
+        .userInfo .login .photo span{
+            font-size: 14px;
+            position: absolute;
+            color: #fff;
+            opacity: .5;
+            right: 0;
+            top: 5px;
+        }
+        .userInfo .login a:nth-child(2){
+            display: inline-block;
+            font-size: 14px;
+            color: #fff;
+            opacity: .5;
+            padding-top: 5px;
+        }
+        /*content*/
+        .content{
+            height: 100%;
+            margin: 0 6%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .content .c_con{
+            position: absolute;
+            top: 11%;
+            bottom: 18%;
+            width: 100%;
+            min-height: 328px;
+            z-index: 3;
+        }
+        .content .content_box{
+            margin-right: 440px;
+        }
+
+        /*播放器按钮组件*/
+        .content .content_box .toolbar{
+            position: relative;
+            margin-bottom: 20px;
+            height: 38px;
+        }
+        .content .content_box .toolbar a{
+            color: #fff;
+            display: inline-block;
+            border-radius: 2px;
+            font-size: 14px;
+            margin-right: 6px;
+            padding: 0 23px;
+            height: 38px;
+            line-height: 38px;
+            white-space: nowrap;
+            box-sizing: border-box;
+            opacity: .8;
+            background-color: transparent;
+            min-width: 122px;
+            text-align: center;
+            border: 1px solid #c9c9c9;
+            border-color: rgba(255,255,255,.2);
+        }
+        .content .content_box .toolbar a:hover{
+            opacity: 1;
+            filter: none;
+            border-color: rgba(255,255,255,1);
+        }
+
+        /*音乐列表*/
+        .content .content_box .music{
+            height: 600px;
+        }
+        .content .content_box .music_header{
+            padding-left: 62px;
+            height: 50px;
+            line-height: 50px;
+            position: relative;
+            padding-right: 95px;
+            background-color: transparent;
+            color: #999;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+            border-color: rgba(255,255,255,0.05);
+        }
+        .content .content_box .music_edit{
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -9px;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            border: 1px solid #ccc;
+            background-position: -1000px;
+        }
+        .content .content_box .music_header_name{
+            width: 68%;
+            float: left;
+            position: relative;
+        }
+        .content .content_box  .music_header_author{
+            width: 26%;
+            float: left;
+            padding-left: 15px;
+        }
+        .content .content_box  .music_header_time {
+            position: absolute;
+            top: 0;
+            right: 38px;
+            width: 50px;
+        }
+
+        /*下面的歌曲列表*/
+        .content .content_box .music_list{
+            overflow: hidden;
+            clear: both;
+        }
+        .content .content_box .music_item{
+            padding-left: 62px;
+            position: relative;
+            padding-right: 95px;
+            clear: both;
+            overflow: hidden;
+            line-height: 50px;
+            height: 50px;
+            color:#999;
+        }
+        .content .content_box .music_item:hover{
+            color: rgba(255,255,255,0.8);
+        }
+        .content .content_box .music_item .item_number{
+            position: absolute;
+            top: 0;
+            width: 36px;
+            left: 16px;
+            text-align: right;
+        }
+        .content .content_box .music_item .item_songName{
+            width: 68%;
+            float: left;
+            position: relative;
+            white-space: normal;
+            text-overflow: ellipsis;
+        }
+        .content .content_box .music_item .item_singer{
+            width: 26%;
+            float: left;
+            padding-left: 15px;
+        }
+        .content .content_box .music_item .item_singer a{
+            color:#999;
+        }
+
+        .content .content_box .music_item .item_time{
+            position: absolute;
+            top: 0;
+            right: 38px;
+            width: 50px;
+
+        }
+
+
+        /*音乐封面*/
+        .content .content_box .songInfo{
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 340px;
+            height: 100%;
+            text-align: center;
+            font-size: 14px;
+            line-height: 24px;
+            color:#999;
+        }
+        .content .content_box .songInfo a{
+            color: #999;
+        }
+
+        .content .content_box .songInfo .songInfo_info .cover{
+            position: relative;
+            display: block;
+            width: 186px;
+            height: 186px;
+            margin: auto;
+        }
+        .content .content_box .songInfo .songInfo_info .cover img{
+            vertical-align: middle;
+            width: 186px;
+            height: 186px;
+        }
+        .content .content_box .songInfo .songInfo_info .cover::after{
+            content: "";
+            position: absolute;
+            left: 9px;
+            top: 0;
+            width: 201px;
+            height: 180px;
+            background: url("images/album_cover_player.png") no-repeat 0 0;
+        }
+        .content .content_box .songInfo .songInfo_info div{
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 28px;
+        }
+        .content .content_box .songInfo .songInfo_info .singName{
+            margin-top: 15px;
+        }
+        .content .content_box .songInfo_lyric{
+            position: absolute;
+            top: 320px;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to bottom,rgba(255,255,255,0) 0,rgba(255,255,255,.6) 15%,rgba(255,255,255,1) 25%,rgba(255,255,255,1) 75%,rgba(255,255,255,.6) 85%,rgba(255,255,255,0) 100%);
+        }
+        .content .content_box .lyric_box{
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            cursor: grab;
+            margin-right: -30px;
+            overflow-y: auto;
+            top: 50%;
+            height: 272px;
+            margin-top: -136px;
+        }
+
+        /*播放器相关*/
+        .content .player{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 11%;
+        }
+        .icon_txt {
+            font: 0/0 a;
+        }
+        .mod_player .mod_btn__border{
+            display:none
+        }
+        .btn_big_down,.btn_big_like,.btn_big_next,.btn_big_only,.btn_big_play,.btn_big_prev,
+        .btn_big_style_list,.btn_big_style_order,.btn_big_style_random,.btn_big_style_single,
+        .btn_big_voice,.btn_lang,.mod_btn_comment,.player_progress__dot{
+            position:absolute;
+            background-image:url("images/player.png");
+            opacity:.8;
+            filter:alpha(opacity=80)
+        }
+        .btn_big_down:hover,.btn_big_like:hover,.btn_big_next:hover,.btn_big_only:hover,.btn_big_play:hover,
+        .btn_big_prev:hover,.btn_big_style_list:hover,.btn_big_style_order:hover,.btn_big_style_random:hover,
+        .btn_big_style_single:hover,.btn_big_voice:hover{
+            opacity:1;filter:none
+        }
+        .btn_big_prev{
+            top:4px;
+            left:0;
+            width:19px;
+            height:20px;
+            background-position:0 -30px
+        }
+        .btn_big_play{
+            top:0;
+            left:65px;
+            width:21px;
+            height:29px;
+            background-position:0 0
+        }
+        .btn_big_play--pause{
+            background-position:-30px 0
+        }
+        .btn_big_next{
+            top:4px;
+            left:132px;
+            width:19px;
+            height:20px;
+            background-position:0 -52px
+        }
+        .btn_big_like{
+            top:4px;
+            right:330px;
+            width:23px;
+            height:21px;
+            background-position:0 -96px
+        }
+        .btn_big_like--like{
+            background-position:-30px -96px
+        }
+        .btn_big_down{
+            top:4px;
+            right:286px;
+            width:22px;
+            height:21px;
+            background-position:0 -120px
+        }
+        .btn_big_voice{
+            top:4px;
+            left:-31px;
+            width:26px;
+            height:21px;
+            background-position:0 -144px
+        }
+        .btn_big_voice--no{
+            background-position:0 -182px
+        }
+        .btn_big_style_random{
+            top:4px;right:378px;width:25px;height:19px;background-position:0 -74px
+        }
+        .btn_big_style_order{
+            top:4px;right:377px;width:23px;height:20px;background-position:0 -260px
+        }
+        .btn_big_style_single{
+            top:4px;right:378px;width:26px;height:25px;background-position:0 -232px
+        }
+        .btn_big_style_list{
+            top:4px;right:378px;width:26px;height:25px;background-position:0 -205px
+        }
+        .btn_big_only{
+            top:3px;right:137px;width:74px;height:26px;background-position:0 -282px
+        }
+        .btn_big_only--on{background-position:0 -311px}
+        .btn_lang{
+            position:absolute;
+            left:50%;
+            bottom:0;
+            margin-left:-12px;
+            background-position:0 -340px;
+            width:24px;
+            height:24px;
+            opacity:.8
+        }
+        .btn_lang:hover{opacity:1}
+        .btn_lang--select{background-position:-30px -340px}
+        .mod_btn_comment{
+            top:3px;right:237px;width:24px;height:24px;background-position:0 -400px
+        }
+        .mod_btn_comment:hover{
+            background-position:0 -460px
+        }
+        .btn_comment99 .btn_comment__numbers{left:11px}
+        .btn_comment9{background-position:-30px -400px}
+        .btn_comment9:hover{background-position:-30px -460px}
+        .btn_comment99{background-position:0 -430px}
+        .btn_comment99:hover{background-position:0 -490px}
+        .player_logo{position:absolute;top:20px;left:20px;z-index:3}
+        .player_logo__pic{width:78px;height:21px;opacity:.3;filter:alpha(opacity=30)}
+        .player_logo__pic:hover{opacity:1;filter:none}
+        .mod_player{height:100%;margin:0 7.638889%;position:relative;z-index:3}
+        .mod_player,.mod_player a{color:#bdbdbe;color:rgba(225,225,225,.8)}
+        .mod_player a:hover{color:#fff}
+        .player__bd{position:absolute;top:11%;bottom:18%;width:100%;min-height:328px;cursor:default}
+        .player__ft{position:absolute;bottom:0;left:0;width:100%;height:11%}
+        .player_music{position:relative;margin:0 448px 0 208px}
+        .player_music__info{padding-right:90px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+            font-size: 14px;
+            color: rgba(225,225,225,.8);
+            line-height: 1.5;}
+        .player_music__info a{
+            color: rgba(225,225,225,.8);
+        }
+        .player_music__time{position:absolute;top:0;right:0;color: rgba(225,225,225,.8);font-size: 14px;
+            line-height: 1.5;}
+        .player_progress{padding-top:6px;height:8px;cursor:pointer}
+        .player_progress__inner{
+            position:relative;
+            height:2px;
+            background:rgba(255,255,255,.1)
+        }
+        .player_progress__load{
+            height:2px;
+            background:rgba(255,255,255,.2)
+        }
+        .player_progress__play{
+            position:absolute;top:0;left:0;height:2px;
+            background:rgba(255,255,255,.7)}
+        .player_progress__dot{top:-4px;right:-4px;width:10px;height:10px;background-position:0 -170px;opacity:1;filter:none}
+        .player_voice{position:absolute;top:0;right:0;width:80px;padding-top:13px}
+
+        .btn_comment__numb {
+            display: inline-block;
+            width: 6px;
+            height: 8px;
+            background: url("images/comment.png");
+        }
+        .btn_comment__numb_9 {
+            background-position: -40px -210px;
+        }
+        .btn_comment__numbers{
+            white-space: nowrap;
+            left: 11px;
+            text-align: left;
+            position: absolute;
+            top: -3px;
+            right: 0;
+            height: 8px;
+            line-height: 8px;
+        }
+        .btn_comment__numb_add {
+            background-position: -25px -125px;
+            margin-left: 1px;
+            vertical-align: -1px;
+        }
+
+
+        /*背景与模糊*/
+        .player_bg{
+            width: 100%;
+            height: 100%;
+            background: url("images/T002R300x300M000003umh0e1p7VYE.jpg") no-repeat 50%;
+            background-size: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            filter: blur(65px);     /*模糊滤镜*/
+            opacity: .6;
+        }
+        .player_mash{
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.35);
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+<!--QQ音乐图标-->
+<div class="player_logo">
+    <a href="javascript:void(0)">
+        <img src="images/player_logo.png" alt="" />
+    </a>
+</div>
+<!-- 右边个人中心 -->
+<div class="userInfo">
+    <div class="download">QQ音乐，千万高品质曲库尽享<a href="javascript:void(0)"><i class="sprite"></i>客户端下载</a></div>
+    <div class="login">
+        <a href="javascript:void(0)" class="photo">
+            <img src="images/g.png" alt="" />
+            <img src="images/login_qq.png" alt="" />
+            <span>叶</span>
+        </a>
+        <a href="javascript:void(0)">设置</a>
+    </div>
+</div>
+<!--正式内容-->
+<div class="content">
+    <div class="c_con">
+        <div class="content_box">
+            <!--菜单栏-->
+            <div class="toolbar">
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-heart-empty"></i>
+                    收藏
+                </a>
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    添加到
+                </a>
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                    下载
+                </a>
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    删除
+                </a>
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    清空列表
+                </a>
+            </div>
+            <!--歌曲详情-->
+            <div class="music">
+                <!--头部菜单-->
+                <ul class="music_header">
+                    <li class="music_edit sprite"></li>
+                    <li class="music_header_name">歌曲</li>
+                    <li class="music_header_author">歌手</li>
+                    <li class="music_header_time">时长</li>
+                </ul>
+                <!-- 歌曲信息 -->
+                <ul class="music_list">
+                    <li class="songs">
+                        <div class="music_item">
+                            <div class="music_edit sprite"></div>
+                            <div class="item_number">1</div>
+                            <div class="item_songName"><span>牵丝戏（梦幻西游盘丝洞门派曲）</span></div>
+                            <div class="item_singer"><a href="">黄龄</a></div>
+                            <div class="item_time">04:11</div>
+                        </div>
+                    </li>
+                    <li class="songs">
+                        <div class="music_item">
+                            <div class="music_edit sprite"></div>
+                            <div class="item_number">1</div>
+                            <div class="item_songName"><span>牵丝戏（梦幻西游盘丝洞门派曲）</span></div>
+                            <div class="item_singer"><a href="">黄龄</a></div>
+                            <div class="item_time">04:11</div>
+                        </div>
+                    </li>
+                    <li class="songs">
+                        <div class="music_item">
+                            <div class="music_edit sprite"></div>
+                            <div class="item_number">1</div>
+                            <div class="item_songName"><span>牵丝戏（梦幻西游盘丝洞门派曲）</span></div>
+                            <div class="item_singer"><a href="">黄龄</a></div>
+                            <div class="item_time">04:11</div>
+                        </div>
+                    </li>
+                    <li class="songs">
+                        <div class="music_item">
+                            <div class="music_edit sprite"></div>
+                            <div class="item_number">1</div>
+                            <div class="item_songName"><span>牵丝戏（梦幻西游盘丝洞门派曲）</span></div>
+                            <div class="item_singer"><a href="">黄龄</a></div>
+                            <div class="item_time">04:11</div>
+                        </div>
+                    </li>
+                    <li class="songs">
+                        <div class="music_item">
+                            <div class="music_edit sprite"></div>
+                            <div class="item_number">1</div>
+                            <div class="item_songName"><span>牵丝戏（梦幻西游盘丝洞门派曲）</span></div>
+                            <div class="item_singer"><a href="">黄龄</a></div>
+                            <div class="item_time">04:11</div>
+                        </div>
+                    </li>
+                    <li class="songs">
+                        <div class="music_item">
+                            <div class="music_edit sprite"></div>
+                            <div class="item_number">1</div>
+                            <div class="item_songName"><span>牵丝戏（梦幻西游盘丝洞门派曲）</span></div>
+                            <div class="item_singer"><a href="">黄龄</a></div>
+                            <div class="item_time">04:11</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="songInfo">
+                <div class="songInfo_info">
+                    <a href="" class="cover">
+                        <img src="images/T002R300x300M000003umh0e1p7VYE.jpg" />
+                    </a>
+                    <div class="singName">歌曲名：<a href="">牵丝戏（梦幻西游盘丝洞门派曲）</a></div>
+                    <div>歌手名：<a href="">黄龄</a></div>
+                    <div>专辑名：<a href="">牵丝戏</a></div>
+                </div>
+                <div class="songInfo_lyric">
+                    <div class="lyric_box">
+                        <div class="song_info__lyric_inner qrc_ctn" id="qrc_ctn" style="transition: -webkit-transform 0.1s ease-out 0s; transform: translateY(0px);">
+                            <p data-id="line_null">&nbsp;</p>
+                            <p data-id="line_0" class="">牵丝戏（梦幻西游盘丝洞门派曲） -  黄龄</p>
+                            <p data-id="line_1">词：Vagary</p>
+                            <p data-id="line_2" class="">曲：银临</p>
+                            <p data-id="line_3" class="">制作人：顾雄</p>
+                            <p data-id="line_4" class="">戏曲指导：张晓涵</p>
+                            <p data-id="line_5">编曲：甘虎</p>
+                            <p data-id="line_6" class="">吉他：顾雄</p>
+                            <p data-id="line_7" class="">笛子：谷少宁</p>
+                            <p data-id="line_8" class="">和声编写演唱：曾婕</p>
+                            <p data-id="line_9">录音：顾雄</p>
+                            <p data-id="line_10" class="">混音：顾雄</p>
+                            <p data-id="line_11">母带：顾雄</p>
+                            <p data-id="line_12" class="">录音棚：牛班Studio</p>
+                            <p data-id="line_13" class="">（未经许可,不得翻唱或使用）</p>
+                            <p data-id="line_14" class="">只愿君心似我心 定不负相思意</p>
+                            <p data-id="line_15" class="">嘲笑谁恃美扬威 丢了魂如何相配</p>
+                            <p data-id="line_16" class="">盘丝舞人醉 帷幕间灯火幽微</p>
+                            <p data-id="line_17" class="">我和你 最天生一对</p>
+                            <p data-id="line_18" class="">没了你才算原罪 丢了魂才好相配</p>
+                            <p data-id="line_19" class="">你褴褛我彩绘 并肩行过山与水</p>
+                            <p data-id="line_20" class="">你憔悴 我替你明媚</p>
+                            <p data-id="line_21" class="">是你含情脉脉 吻我眼角珠泪</p>
+                            <p data-id="line_22" class="">演离合相遇悲喜为谁</p>
+                            <p data-id="line_23" class="">洞外林荫青翠 我眼里只剩漆黑</p>
+                            <p data-id="line_24" class="">问世间哪有更完美</p>
+                            <p data-id="line_25" class="">兰花指捻红尘似水</p>
+                            <p data-id="line_26" class="">暗箭无妨 唯恐相思味</p>
+                            <p data-id="line_27" class="">唱别久悲不成悲 勾魂摄魄心成灰</p>
+                            <p data-id="line_28" class="on">愿谁记得谁 最好的年岁</p>
+                            <p data-id="line_29">你一寐我梦如飞 你一醒我魂皆归</p>
+                            <p data-id="line_30">苦乐都相随 天罗地网不复回</p>
+                            <p data-id="line_31">将谦卑 温柔成绝对</p>
+                            <p data-id="line_32">你错我不肯对 你懵懂我蒙昧</p>
+                            <p data-id="line_33">心火怎甘心扬汤止沸</p>
+                            <p data-id="line_34">你枯我不曾萎 你倦我也不敢累</p>
+                            <p data-id="line_35">用什么暖你一千岁</p>
+                            <p data-id="line_36">风雪依稀秋白发尾</p>
+                            <p data-id="line_37">秋波横黛 轻触你眼眉</p>
+                            <p data-id="line_38">假如你舍一滴泪 假如老去我能陪</p>
+                            <p data-id="line_39">蛛丝尽成灰 也去得完美</p>
+                            <p data-id="line_40">风雪依稀秋白发尾</p>
+                            <p data-id="line_41">秋波横黛 轻触你眼眉</p>
+                            <p data-id="line_42">假如你舍一滴泪 假如老去我能陪</p>
+                            <p data-id="line_43">蛛丝尽成灰 也去得完美</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--播放器相关-->
+    <div class="player">
+        <a href="javascript:;" class="btn_big_prev" title="alt+←"><span class="icon_txt">上一首</span></a>
+        <a href="javascript:;" class="btn_big_play" id="btnplay" title="[空格]"><span class="icon_txt">播放</span></a>
+        <a href="javascript:;" class="btn_big_next" title="alt+→"><span class="icon_txt">下一首</span></a>
+        <div class="player_music">
+            <div class="player_music__info" id="sim_song_info">
+                <a href=""  title="牵丝戏（梦幻西游盘丝洞门派曲）" class="js_song"  target="_blank">牵丝戏（梦幻西游盘丝洞门派曲）</a>
+                - <a href=""  title="黄龄" class="js_singer" target="_blank"> 黄龄</a>
+            </div>
+            <div class="player_music__time" id="time_show">01:18 / 04:12</div>
+            <div class="player_progress" id="progress">
+                <div class="player_progress__inner" id="spanplayer_bgbar" title="[快进ctrl+alt+→][快退ctrl+alt+←]">
+                    <div class="player_progress__load" id="downloadbar" style="width:30%;"></div>
+                    <div class="player_progress__play" style="width:30%;" id="spanplaybar"><i class="player_progress__dot" id="spanprogress_op"></i></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <a href="javascript:;" class="btn_big_style_order" id="play_mod" title="顺序播放[O]"><span class="icon_txt">顺序播放[O]</span></a>
+        </div>
+        <a href="javascript:;" class="btn_big_like js_btn_fav" title="喜欢[V]"><span class="icon_txt">喜欢[V]</span></a>
+        <a href="javascript:;" class="btn_big_down js_btn_down" title="下载[D]"><span class="icon_txt">下载[D]</span></a>
+        <a class="mod_btn_comment js_into_comment btn_comment99"  href="" style="" target="_blank">
+            <span class="btn_comment__numbers"><i class="btn_comment__numb btn_comment__numb_9"></i><i class="btn_comment__numb btn_comment__numb_9"></i><i class="btn_comment__numb btn_comment__numb_9"></i><i class="btn_comment__numb btn_comment__numb_add"></i></span><span class="icon_txt">评论</span></a>
+        <a href="javascript:;" class="btn_big_only" id="simp_btn" title="打开纯净模式[C]"><span class="icon_txt">打开纯净模式[C]</span></a>
+        <div class="player_progress player_voice" id="voice">
+            <a href="javascript:;" class="btn_big_voice" id="spanmute" title="关闭声音[M]"><span class="icon_txt">关闭声音[M]</span></a>
+            <div class="player_progress__inner" id="spanvolume" title="调节音量 [增大alt+↑][减小alt+↓]">
+                <div class="player_progress__play" style="width:50%;" id="spanvolumebar"><i class="player_progress__dot" id="spanvolumeop"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--背景与mash-->
+<div class="player_mash"></div>
+<div class="player_bg"></div>
+</body>
+</html>
